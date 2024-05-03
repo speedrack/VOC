@@ -3,5 +3,3 @@ pandas
 openai
 openpyxl
 plotly
-os
-
