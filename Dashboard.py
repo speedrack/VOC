@@ -6,8 +6,8 @@ import plotly.graph_objects as go
 
 
 @st.cache_data
-def load_reviewNum():
-    data = pd.read_excel(r"test_통계.xlsx", sheet_name=None)
+def load_data():
+    data = pd.read_excel(r"통계.xlsx", sheet_name=None)
     return data
 
 @st.cache_data
@@ -39,7 +39,6 @@ def draw_chart(sheet):
                     name='피피랙'))
     
     
-
         
     # 그래프 설정
     fig.update_layout(xaxis_title='주차',
@@ -83,7 +82,7 @@ def cal_ratio(latest_list, previous_list):
 
 
 if __name__ == '__main__':
-    data = load_reviewNum()
+    data = load_data()
     
     
     # 대시보드 타이틀
@@ -136,26 +135,34 @@ if __name__ == '__main__':
         chart_reviewnum = draw_chart('평균')
         st.plotly_chart(chart_reviewnum, use_container_width=True)
         
+        
         st.divider()
+        
         
         # 그룹 누적 막대 그래프
         st.subheader('주차/브랜드별 별점 상세')
-        df_numdetail = pd.read_excel(r'testdf.xlsx')
+        df_numdetail = data['별점세부']
         sort_numdetail = sorted(df_numdetail['week'].unique(), reverse=True)
         week_selected = st.multiselect('주차들을 선택하세요.', sort_numdetail, default=sort_numdetail[0])
         
+        df_numdetail['scores'] = df_numdetail['scores'].astype('str')
         if week_selected:
             df_numdetail = df_numdetail.loc[df_numdetail['week'].isin(week_selected)]
-            fig_numdetail = px.bar(df_numdetail, x="brand", y="N", hover_data="ratio", facet_col="week", color="scores")
+            fig_numdetail = px.bar(df_numdetail, x="brand", y='N', hover_data=['ratio'], facet_col="week", color="scores")
             st.plotly_chart(fig_numdetail, use_container_width=True)
 
 
+
+    
     # 긍부정 주제
     with tab3:
         st.write('수치화 및 프롬프트 제어 후 시각화')
         
+    
         
+    
     with tab4:
+        
         with st.expander('17W 이슈 및 조치사항', expanded=True):
             st.write('배송 관련')
 
@@ -198,13 +205,12 @@ if __name__ == '__main__':
                                 {'주차': '15w',
                                 '이슈': '배송 - 1층 방치 (슈랙)',
                                 '문서링크':'',
-                                 '비고':''
-                                     },
+                                 '비고':''},
+                                
                                 {'주차': '16w',
                                 '이슈': '배송 - 현관문 막음 (홈던트하우스)',
                                 '문서링크':'',
-                                 '비고': '고객과 통화 및 사과 완료. 택배기사와 연락하여 재발 방지 요구할 예정'
-                                    }
+                                 '비고': '고객과 통화 및 사과 완료. 택배기사와 연락하여 재발 방지 요구할 예정'}       
                                  ])
             
             st.dataframe(df_issue)

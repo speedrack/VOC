@@ -1,11 +1,10 @@
 import streamlit as st
 import pandas as pd
-
+import os
 
 @st.cache_data
 def load_review(week):
     data = pd.read_excel(fr"week/{week}/VOC {week} 원본.xlsx")
-    data['등록일'] = data['등록일'].astype(str)
     return data
 
 @st.cache_data
@@ -36,7 +35,8 @@ if __name__ == '__main__':
     st.title('브랜드별 VOC 분석')
     
     # 주차 선택
-    weeklist = ['16w', '17w']
+    week_dir = r'C:\Users\speed\Desktop\streamlit_git\week'
+    weeklist = os.listdir(week_dir)
     weeklist = sorted(weeklist, reverse=True)
     week_selected = st.sidebar.selectbox('주차를 선택하세요.', weeklist, index=0)
 
@@ -55,6 +55,7 @@ if __name__ == '__main__':
     st.write(brand_neg_summary)
 
     st.caption('GPT4 turbo로부터 생성됨.')
+    st.write('\n\n')
     
     if st.button('해당 리뷰 원본 보기', type='primary'):
         neg_df = brand_df.loc[brand_df['평점'] <= 3]
