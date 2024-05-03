@@ -35,7 +35,7 @@ if __name__ == '__main__':
     st.title('브랜드별 VOC 분석')
     
     # 주차 선택
-    week_dir = r'C:\Users\speed\Desktop\streamlit_git\week'
+    week_dir = 'week'
     weeklist = os.listdir(week_dir)
     weeklist = sorted(weeklist, reverse=True)
     week_selected = st.sidebar.selectbox('주차를 선택하세요.', weeklist, index=0)
