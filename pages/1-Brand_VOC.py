@@ -4,7 +4,7 @@ import os
 
 @st.cache_data
 def load_review(week):
-    data = pd.read_excel(fr"week/{week}/VOC {week} 원본.xlsx")
+    data = pd.read_excel(fr"week/{week}/VOC {week} 원본_3점.xlsx")
     return data
 
 @st.cache_data
