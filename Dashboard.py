@@ -87,7 +87,7 @@ if __name__ == '__main__':
     
     # 대시보드 타이틀
     st.title('VOC 대시보드')
-    tab1, tab2, tab3, tab4 = st.tabs(['리뷰 수' , '별점', '긍부정 주제', '이슈사항'])
+    tab1, tab2, tab3 = st.tabs(['리뷰 수' , '별점', '이슈사항'])
     
     # 리뷰 수
     with tab1:
@@ -155,15 +155,8 @@ if __name__ == '__main__':
 
     
     # 긍부정 주제
-    with tab3:
-        st.write('수치화 및 프롬프트 제어 후 시각화')
-        
-    
-        
-    
-    with tab4:
-        
-        with st.expander('17W 이슈 및 조치사항', expanded=True):
+    with tab3:     
+        with st.expander('17W 이슈 및 조치사항'):
             st.write('배송 관련')
 
             temp1 = pd.DataFrame([{'아이디': 'songe0606',

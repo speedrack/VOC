@@ -26,7 +26,16 @@ def keyvalue_summary(week, brand):
         
     return txt
 
-
+@st.cache_data
+def notable_summary(week, brand):
+    try:
+        file = fr"week/{week}/특이사항/특이사항_{brand}.txt"
+        f = open(file, 'r', encoding='UTF-8')
+        txt = f.read()
+    except:
+        txt = '...'
+        
+    return txt
 
 
 if __name__ == '__main__':
@@ -48,9 +57,21 @@ if __name__ == '__main__':
     brand_df = df.loc[df['브랜드']==brand_selected]
     
     
+    
+    # 특이사항
+    st.write('\n\n')
+    st.subheader(f"{brand_selected} 특이사항")
+    
+    brand_notable_summary = notable_summary(week_selected, brand_selected)
+    st.write(brand_notable_summary)
+    
+    st.divider()
+    
+    
     # 3점 이하 불만 리뷰 요약 및 df 출력
     st.write('\n\n')
     st.subheader(f"{brand_selected} 3점 이하 리뷰 요약")
+    
     brand_neg_summary = neg_summary(week_selected, brand_selected)
     st.write(brand_neg_summary)
 
@@ -74,8 +95,3 @@ if __name__ == '__main__':
     
     st.divider()
     
-    
-    # 특이사항
-    st.write('\n\n')
-    st.subheader(f"{brand_selected} 특이사항")
-    st.write('...')
