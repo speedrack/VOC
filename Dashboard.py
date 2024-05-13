@@ -10,6 +10,7 @@ def load_data():
     data = pd.read_excel(r"통계.xlsx", sheet_name=None)
     return data
 
+@st.cache_data
 def load_topic():
     data = pd.read_excel(r"topic.xlsx", sheet_name=None)
     return data
