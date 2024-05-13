@@ -10,8 +10,12 @@ def load_data():
     data = pd.read_excel(r"통계.xlsx", sheet_name=None)
     return data
 
+def load_topic():
+    data = pd.read_excel(r"topic.xlsx", sheet_name=None)
+    return data
+
 @st.cache_data
-def draw_chart(sheet):
+def draw_chart(data, sheet):
     weeks = data[sheet]['주차별']
     
     hh = data[sheet]['홈던트하우스']
@@ -83,11 +87,11 @@ def cal_ratio(latest_list, previous_list):
 
 if __name__ == '__main__':
     data = load_data()
-    
+    topic = load_topic()
     
     # 대시보드 타이틀
     st.title('VOC 대시보드')
-    tab1, tab2 = st.tabs(['리뷰 수' , '별점'])
+    tab1, tab2, tab3 = st.tabs(['리뷰 수' , '별점', '주요 주제'])
     
     # 리뷰 수
     with tab1:
@@ -95,7 +99,7 @@ if __name__ == '__main__':
         # 리뷰 수 그래프
         st.write('\n\n')
         st.subheader('주차별 리뷰 수')
-        chart_reviewnum = draw_chart('리뷰수')
+        chart_reviewnum = draw_chart(data, '리뷰수')
         st.plotly_chart(chart_reviewnum, use_container_width=True)
         
         # 리뷰 수 상세
@@ -134,7 +138,7 @@ if __name__ == '__main__':
         # 평균 별점 그래프
         st.write('\n\n')
         st.subheader('주차별 평균 별점')
-        chart_reviewnum = draw_chart('평균')
+        chart_reviewnum = draw_chart(data, '평균')
         st.plotly_chart(chart_reviewnum, use_container_width=True)
         
         
@@ -154,4 +158,29 @@ if __name__ == '__main__':
             st.plotly_chart(fig_numdetail, use_container_width=True)
 
         
-
+    with tab3:
+        st.write('\n\n')
+        st.subheader('주제별 언급 횟수')
+        st.caption('긍정 주제: 견고함, 조립용이성, 디자인')
+        st.caption('부정 주제: 누락, 파손, 배송불만')
+        st.write('\n\n')
+        
+        with st.expander('긍정 주제'):  
+            chart1 = draw_chart(topic, '견고함')
+            st.plotly_chart(chart1, use_container_width=True)
+       
+            chart2 = draw_chart(topic, '조립용이성')
+            st.plotly_chart(chart2, use_container_width=True)
+     
+            chart3 = draw_chart(topic, '디자인')
+            st.plotly_chart(chart3, use_container_width=True)
+            
+        with st.expander('부정 주제'):  
+            chart4 = draw_chart(topic, '누락')
+            st.plotly_chart(chart4, use_container_width=True)
+       
+            chart5 = draw_chart(topic, '파손')
+            st.plotly_chart(chart5, use_container_width=True)
+     
+            chart6 = draw_chart(topic, '배송불만')
+            st.plotly_chart(chart6, use_container_width=True)
