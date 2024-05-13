@@ -7,7 +7,7 @@ def load_review(week):
     data = pd.read_excel(fr"week/{week}/VOC {week} 원본_3점.xlsx")
     return data
 
-#@st.cache_data
+@st.cache_data
 def neg_summary(week, brand):
     file = fr"week/{week}/neg/neg_{brand}.txt"
     f = open(file, 'r', encoding='UTF-8')
@@ -15,7 +15,7 @@ def neg_summary(week, brand):
     
     return txt
 
-#@st.cache_data
+@st.cache_data
 def keyvalue_summary(week, brand):
     try:
         file = fr"week/{week}/topic/주제_{brand}.txt"
@@ -26,7 +26,7 @@ def keyvalue_summary(week, brand):
         
     return txt
 
-#@st.cache_data
+@st.cache_data
 def notable_summary(week, brand):
     try:
         file = fr"week/{week}/특이사항/특이사항_{brand}.txt"

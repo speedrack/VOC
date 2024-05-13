@@ -79,7 +79,7 @@ def cal_ratio(latest_list, previous_list):
 
 
 
-
+ 
 
 if __name__ == '__main__':
     data = load_data()
