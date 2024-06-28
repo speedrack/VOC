@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-
+import numpy as np
 
 
 @st.cache_data
@@ -160,28 +160,92 @@ if __name__ == '__main__':
 
         
     with tab3:
-        st.write('\n\n')
-        st.subheader('주제별 언급 횟수')
-        st.caption('긍정 주제: 견고함, 조립용이성, 디자인')
-        st.caption('부정 주제: 누락, 파손, 배송불만')
-        st.write('\n\n')
+        df = load_topic()
+        brands = ['홈던트하우스', '스피드랙', '슈랙', '피피랙']
+
+        # 브랜드 선택
+        selected_brands = st.multiselect(
+            '브랜드 선택',
+            options=brands,
+            default=brands[:2])
         
-        with st.expander('긍정 주제'):  
-            chart1 = draw_chart(topic, '견고함')
-            st.plotly_chart(chart1, use_container_width=True)
-       
-            chart2 = draw_chart(topic, '조립용이성')
-            st.plotly_chart(chart2, use_container_width=True)
-     
-            chart3 = draw_chart(topic, '디자인')
-            st.plotly_chart(chart3, use_container_width=True)
-            
-        with st.expander('부정 주제'):  
-            chart4 = draw_chart(topic, '누락')
-            st.plotly_chart(chart4, use_container_width=True)
-       
-            chart5 = draw_chart(topic, '파손')
-            st.plotly_chart(chart5, use_container_width=True)
-     
-            chart6 = draw_chart(topic, '배송불만')
-            st.plotly_chart(chart6, use_container_width=True)
+        # 색상 팔레트 설정
+        color_palette = px.colors.qualitative.Plotly
+        
+        # 각 선택된 브랜드에 대해 expander 생성
+        for brand in selected_brands:
+            with st.expander(f"{brand} 주제별 수치", expanded=False):
+                # 해당 브랜드의 데이터만 필터링
+                brand_df = df[brand]
+                
+                # 주차 선택 위젯
+                sort_numdetail = sorted(brand_df['주차별'].unique(), reverse=True)
+                
+                selected_weeks = st.multiselect(
+                    f'브랜드 {brand}의 주차 선택',
+                    options=sort_numdetail,
+                    default=sort_numdetail[:2],  
+                    key=f'week_select_{brand}'  # 각 브랜드마다 고유한 키 사용
+                )
+                
+                # 상위 3개 항목 그래프
+                fig_top = go.Figure()
+                
+                for i, week in enumerate(selected_weeks):
+                    week_data = brand_df[brand_df['주차별'] == week]
+                    
+                    fig_top.add_trace(go.Bar(
+                        y=['견고함', '조립용이성', '디자인'],
+                        x=[week_data['견고함'].values[0], week_data['조립용이성'].values[0], week_data['디자인'].values[0]],
+                        orientation='h',
+                        name=f'{week}주차',
+                        marker_color=color_palette[i % len(color_palette)]
+                    ))
+                
+                fig_top.update_layout(
+                    title='긍정 주제',
+                    xaxis_title='수치',
+                    yaxis_title='주제',
+                    legend_title='주차',
+                    hovermode='y unified',
+                    height=300,
+                    barmode='group',
+                    bargap=0.25,  # 막대 그룹 사이의 간격 증가
+                    bargroupgap=0.1,  # 그룹 내 막대 사이의 간격
+                    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, traceorder='reversed')
+                )
+                
+                fig_top.update_yaxes(categoryorder='array', categoryarray=['디자인', '조립용이성', '견고함'])
+                
+                st.plotly_chart(fig_top, use_container_width=True)
+                
+                # 하위 3개 항목 그래프
+                fig_bottom = go.Figure()
+                
+                for i, week in enumerate(selected_weeks):
+                    week_data = brand_df[brand_df['주차별'] == week]
+                    
+                    fig_bottom.add_trace(go.Bar(
+                        y=['누락', '파손', '배송불만'],
+                        x=[week_data['누락'].values[0], week_data['파손'].values[0], week_data['배송불만'].values[0]],
+                        orientation='h',
+                        name=f'{week}주차',
+                        marker_color=color_palette[i % len(color_palette)]
+                    ))
+                
+                fig_bottom.update_layout(
+                    title='부정 주제',
+                    xaxis_title='수치',
+                    yaxis_title='주제',
+                    legend_title='주차',
+                    hovermode='y unified',
+                    height=300,
+                    barmode='group',
+                    bargap=0.25,  # 막대 그룹 사이의 간격 증가
+                    bargroupgap=0.1,  # 그룹 내 막대 사이의 간격
+                    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, traceorder='reversed')
+                )
+                
+                fig_bottom.update_yaxes(categoryorder='array', categoryarray=['배송불만', '파손', '누락'])
+                
+                st.plotly_chart(fig_bottom, use_container_width=True)
