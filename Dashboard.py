@@ -182,7 +182,7 @@ if __name__ == '__main__':
                 sort_numdetail = sorted(brand_df['주차별'].unique(), reverse=True)
                 
                 selected_weeks = st.multiselect(
-                    f'브랜드 {brand}의 주차 선택',
+                    f'주차 선택',
                     options=sort_numdetail,
                     default=sort_numdetail[:2],  
                     key=f'week_select_{brand}'  # 각 브랜드마다 고유한 키 사용
