@@ -13,10 +13,8 @@ import numpy as np
 from datetime import date
 from datetime import timedelta
 import streamlit.components.v1 as components
-from html2image import Html2Image
-from PIL import Image
-import time
-
+#from html2image import Html2Image
+#from PIL import Image
 
 
 #df_raw, df, df_finished로 나눠서 처리하기
