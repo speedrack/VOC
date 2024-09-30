@@ -281,10 +281,10 @@ def filtering_df(df):
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        브랜드_filter = st.selectbox('브랜드', ['전체'] + filtered_df['브랜드'].unique().tolist())
-    
-    with col2:
         대분류_filter = st.selectbox('대분류', ['전체'] + filtered_df['대분류'].unique().tolist())
+        
+    with col2:
+        브랜드_filter = st.selectbox('브랜드', ['전체'] + filtered_df['브랜드'].unique().tolist())
     
     with col3:
         부서_filter = st.selectbox('부서', ['전체'] + filtered_df['부서'].unique().tolist())
@@ -293,10 +293,12 @@ def filtering_df(df):
         완료_filter = st.selectbox('완료여부', ['전체'] + filtered_df['완료여부'].unique().tolist())
     
     
-    if 브랜드_filter != '전체':
-        filtered_df = filtered_df[filtered_df['브랜드'] == 브랜드_filter]
     if 대분류_filter != '전체':
         filtered_df = filtered_df[filtered_df['대분류'] == 대분류_filter]
+        
+    if 브랜드_filter != '전체':
+        filtered_df = filtered_df[filtered_df['브랜드'] == 브랜드_filter]
+    
     if 부서_filter != '전체':
         filtered_df = filtered_df[filtered_df['부서'] == 부서_filter]
     if 완료_filter != '전체':
@@ -320,10 +322,10 @@ def filtering_subtopic_df(df, selected_topic):
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        브랜드_filter = st.selectbox('브랜드', ['전체'] + filtered_df['브랜드'].unique().tolist(), key=1)
+        소분류_filter = st.selectbox('소분류', ['전체'] + filtered_df['소분류'].unique().tolist(), key=1)
     
     with col2:
-        소분류_filter = st.selectbox('소분류', ['전체'] + filtered_df['소분류'].unique().tolist(), key=2)
+        브랜드_filter = st.selectbox('브랜드', ['전체'] + filtered_df['브랜드'].unique().tolist(), key=2)
     
     with col3:
         부서_filter = st.selectbox('부서', ['전체'] + filtered_df['부서'].unique().tolist(), key=3)
@@ -332,10 +334,11 @@ def filtering_subtopic_df(df, selected_topic):
         완료_filter = st.selectbox('완료여부', ['전체'] + filtered_df['완료여부'].unique().tolist(), key=4)
     
     
-    if 브랜드_filter != '전체':
-        filtered_df = filtered_df[filtered_df['브랜드'] == 브랜드_filter]
+
     if 소분류_filter != '전체':
         filtered_df = filtered_df[filtered_df['소분류'] == 소분류_filter]
+    if 브랜드_filter != '전체':
+        filtered_df = filtered_df[filtered_df['브랜드'] == 브랜드_filter]
     if 부서_filter != '전체':
         filtered_df = filtered_df[filtered_df['부서'] == 부서_filter]
     if 완료_filter != '전체':
