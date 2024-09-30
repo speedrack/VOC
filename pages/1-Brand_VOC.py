@@ -65,7 +65,7 @@ if __name__ == '__main__':
     # 대시보드 타이틀
     st.title(f'{brand_selected} VOC 분석')
     
-    tab1, tab2, tab3 = st.tabs(['개선 제안' , '3점 이하', '주제별 요약'])
+    tab1, tab2 = st.tabs(['개선 제안' , '3점 이하'])#, '주제별 요약'])
     
     # 개선 제안 리뷰
     with tab1:
@@ -93,9 +93,9 @@ if __name__ == '__main__':
     
         
     # 주제별 요약
-    with tab3: 
-        st.subheader("주제별 요약")
-        brand_keyvalue_summary = keyvalue_summary(week_selected, brand_selected)
-        st.write(brand_keyvalue_summary)
+    # with tab3: 
+    #     st.subheader("주제별 요약")
+    #     brand_keyvalue_summary = keyvalue_summary(week_selected, brand_selected)
+    #     st.write(brand_keyvalue_summary)
         
         
