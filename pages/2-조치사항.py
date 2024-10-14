@@ -406,7 +406,8 @@ if __name__ == '__main__':
         with st.expander('원본 확인 & 다운로드'):
             filtering_df(df)
         
-        st.write('https://xmind.ai/PN0RdI07')
+        
+        st.caption('분류체계 마인드맵: https://xmind.ai/PN0RdI07')
             
         
         
