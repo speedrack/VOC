@@ -64,6 +64,10 @@ def PieChart(df):
                                  hovertext=agg_data['hover_text'],
                                  hoverinfo='text')])  # 호버 정보를 텍스트로 제한
     
+    fig.update_layout(
+       # 전체 여백 조정 - 아래 여백을 크게 설정
+       margin=dict(b=100))
+    
     # 트레이스 업데이트
     fig.update_traces(textposition='outside',
                       textinfo='label+percent+value', 
@@ -392,6 +396,7 @@ if __name__ == '__main__':
         with col1:
             st.subheader('조치사항 대분류')
             PieChart(df)
+            
             st.write('Metric')
             create_metric(df, df_thisWeek)
             
