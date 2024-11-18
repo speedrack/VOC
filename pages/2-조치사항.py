@@ -408,7 +408,7 @@ if __name__ == '__main__':
         st.divider()
                 
         
-        with st.expander('원본 확인 & 다운로드'):
+        with st.expander('조치사항 원본 확인'):
             filtering_df(df)
         
         
