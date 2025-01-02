@@ -178,7 +178,7 @@ if __name__ == '__main__':
         
         # 그룹 누적 막대 그래프
         st.subheader('주차/브랜드별 별점 상세')
-        df_numdetail = data['별점세부']
+        df_numdetail = data['별점세부'].copy()
         # year와 week를 결합하여 정렬
         df_numdetail['year_week'] = (df_numdetail['year'].astype(str) + "." + df_numdetail['week'].astype(str))
 
@@ -198,7 +198,7 @@ if __name__ == '__main__':
             st.plotly_chart(fig_numdetail, use_container_width=True)
 
 
-        st.dataframe(data['별점세부'], use_container_width=True, hide_index=True)
+        st.dataframe(data['별점세부'].astype(str), use_container_width=True, hide_index=True)
         
         
         
