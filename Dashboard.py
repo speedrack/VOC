@@ -198,7 +198,7 @@ if __name__ == '__main__':
             st.plotly_chart(fig_numdetail, use_container_width=True)
 
 
-        st.dataframe(df_numdetail)
+        st.dataframe(data['별점세부'], use_container_width=True, hide_index=True)
         
         
         
