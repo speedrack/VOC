@@ -16,31 +16,14 @@ def load_topic():
     return data
 
 @st.cache_data
-def draw_chart(data, sheet, recent=False):
-    """
-    데이터를 기반으로 그래프를 그리는 함수.
-
-    Args:
-        recent (bool): True일 경우 최근 12개의 데이터만 표시.
-
-    Returns:
-        fig: Plotly 그래프 객체.
-    """
-    # 연도와 주차 조합
-    weeks = data[sheet]['year'].astype(str) + "." + data[sheet]['주차별'].astype(str)
+def draw_chart(data, sheet):
+    weeks = data[sheet]['주차별']
     
     hh = data[sheet]['홈던트하우스']
     speed = data[sheet]['스피드랙']
     shu = data[sheet]['슈랙']
     pp = data[sheet]['피피랙']
     
-    # 최근 12개만 선택
-    if recent:
-        weeks = weeks.tail(12)
-        hh = hh.tail(12)
-        speed = speed.tail(12)
-        shu = shu.tail(12)
-        pp = pp.tail(12)
     
     # 그래프 그리기
     fig = go.Figure()
@@ -60,12 +43,11 @@ def draw_chart(data, sheet, recent=False):
                     mode='lines+markers',
                     name='피피랙'))
     
+    
+        
     # 그래프 설정
-    fig.update_layout(
-        xaxis_title='주차',
-        yaxis_title=sheet,
-        title="최근 12주 데이터" if recent else "전체 데이터"
-    )
+    fig.update_layout(xaxis_title='주차',
+                      yaxis_title=sheet)
 
     return fig
     
@@ -118,20 +100,8 @@ if __name__ == '__main__':
         # 리뷰 수 그래프
         st.write('\n\n')
         st.subheader('주차별 리뷰 수')
-        chart_reviewnum = draw_chart(data, '리뷰수', recent=True)
+        chart_reviewnum = draw_chart(data, '리뷰수')
         st.plotly_chart(chart_reviewnum, use_container_width=True)
-        
-        with st.extender("전체 기간 그래프 보기"):
-            chart_reviewnum_total = draw_chart(data, '리뷰수', recent=False)
-            st.plotly_chart(chart_reviewnum, use_container_width=True)
-        
-        
-
-        
-        st.divider()
-        
-        
-        ## 전주 대비 변화
         
         # 리뷰 수 상세
         df_reviewnum = data['리뷰수']
@@ -143,6 +113,10 @@ if __name__ == '__main__':
         previous_sum = previous_list.sum()
         
         
+        st.divider()
+        
+        
+        # 전주 대비 변화
         st.subheader('전주 대비 변화')    
         ratios, ratios_delta = cal_ratio(latest_list, previous_list)
         st.metric(f"{latest} 총 리뷰 수", f"{latest_sum}", f"{latest_sum - previous_sum}")
@@ -165,13 +139,9 @@ if __name__ == '__main__':
         # 평균 별점 그래프
         st.write('\n\n')
         st.subheader('주차별 평균 별점')
-        chart_reviewnum = draw_chart(data, '평균', recent=True)
+        chart_reviewnum = draw_chart(data, '평균')
         st.plotly_chart(chart_reviewnum, use_container_width=True)
         
-        with st.extender("전체 기간 그래프 보기"):
-            chart_reviewnum_total = draw_chart(data, '평균', recent=False)
-            st.plotly_chart(chart_reviewnum, use_container_width=True)
-
         
         st.divider()
         
@@ -179,23 +149,12 @@ if __name__ == '__main__':
         # 그룹 누적 막대 그래프
         st.subheader('주차/브랜드별 별점 상세')
         df_numdetail = data['별점세부']
-        # year와 week를 결합하여 정렬
-        df_numdetail['year_week'] = (df_numdetail['year'].astype(str) + "." + df_numdetail['week'].astype(str))
-
-        # 정렬 기준 생성 (연도와 주차를 고려하여 최신순 정렬)
-        sort_numdetail = sorted(
-            df_numdetail['year_week'].unique(),
-            key=lambda x: (int(x.split('.')[0]), int(x.split('.')[1])),  # 연도와 주차로 정렬
-            reverse=True
-        )
-    
-        # 멀티셀렉트 박스
+        sort_numdetail = sorted(df_numdetail['week'].unique(), reverse=True)
         week_selected = st.multiselect('주차들을 선택하세요.', sort_numdetail, default=sort_numdetail[0])
-        
         
         df_numdetail['scores'] = df_numdetail['scores'].astype('str')
         if week_selected:
-            df_numdetail = df_numdetail.loc[df_numdetail['year_week'].isin(week_selected)]
+            df_numdetail = df_numdetail.loc[df_numdetail['week'].isin(week_selected)]
             fig_numdetail = px.bar(df_numdetail, x="brand", y='N', hover_data=['ratio'], facet_col="week", color="scores")
             st.plotly_chart(fig_numdetail, use_container_width=True)
 
