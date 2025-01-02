@@ -199,10 +199,8 @@ if __name__ == '__main__':
 
 
         
-        df_startable = data['별점세부'].copy()
-        df_startable = df_startable.loc[df_startable['year_week'].isin(week_selected)]
         
-        pivot_table = df_startable.pivot_table(
+        pivot_table = df_numdetail.pivot_table(
             index='brand',          # Rows: brand
             columns='scores',       # Columns: scores
             values='N',             # Values: N
