@@ -121,7 +121,7 @@ if __name__ == '__main__':
         chart_reviewnum = draw_chart(data, '리뷰수', recent=True)
         st.plotly_chart(chart_reviewnum, use_container_width=True)
         
-        with st.extender("전체 기간 그래프 보기"):
+        with st.expander("전체 기간 그래프 보기"):
             chart_reviewnum_total = draw_chart(data, '리뷰수', recent=False)
             st.plotly_chart(chart_reviewnum, use_container_width=True)
         
@@ -168,7 +168,7 @@ if __name__ == '__main__':
         chart_reviewnum = draw_chart(data, '평균', recent=True)
         st.plotly_chart(chart_reviewnum, use_container_width=True)
         
-        with st.extender("전체 기간 그래프 보기"):
+        with st.expander("전체 기간 그래프 보기"):
             chart_reviewnum_total = draw_chart(data, '평균', recent=False)
             st.plotly_chart(chart_reviewnum, use_container_width=True)
 
