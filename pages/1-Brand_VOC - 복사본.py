@@ -53,7 +53,7 @@ if __name__ == '__main__':
     year_selected = st.sidebar.selectbox('연도를 선택하세요.', yearlist, index=0)
     
 
-    week_dir = os.path.join(year_selected, 'week')
+    week_dir = os.path.join(year_dir, year_selected)
     if os.path.exists(week_dir):
         weeklist = os.listdir(week_dir)  
         weeklist = sorted(weeklist, reverse=True)  
