@@ -140,8 +140,8 @@ if __name__ == '__main__':
         previous = df_reviewnum['year-week'].unique()[-2]
         
         latest_list, previous_list, subtracts = cal_reviewNum(latest, previous)
-        latest_sum = latest_list.sum()
-        previous_sum = previous_list.sum()
+        latest_sum = sum(latest_list)
+        previous_sum = sum(previous_list)
         
         
         st.subheader('전주 대비 변화')    
