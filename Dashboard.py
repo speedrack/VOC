@@ -197,6 +197,12 @@ if __name__ == '__main__':
             fig_numdetail = px.bar(df_numdetail, x="brand", y='N', hover_data=['ratio'], facet_col="week", color="scores")
             st.plotly_chart(fig_numdetail, use_container_width=True)
 
+
+        st.dataframe(df_numdetail)
+        
+        
+        
+        
         
     # with tab3:
     #     df = load_topic()
