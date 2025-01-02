@@ -198,7 +198,26 @@ if __name__ == '__main__':
             st.plotly_chart(fig_numdetail, use_container_width=True)
 
 
-        st.dataframe(data['별점세부'].astype(str), use_container_width=True, hide_index=True)
+        
+        df_startable = data['별점세부'].copy()
+        df_startable = df_startable.loc[df_startable['year_week'].isin(week_selected)]
+        
+        pivot_table = df_startable.pivot_table(
+            index='brand',          # Rows: brand
+            columns='scores',       # Columns: scores
+            values='N',             # Values: N
+            aggfunc='sum',          # Aggregation function: sum
+            fill_value=0            # Fill NaN with 0
+        )
+        
+        # Add the total column (sum of all scores for each brand)
+        pivot_table['Total'] = pivot_table.sum(axis=1)
+        
+        # Reset index for a clean output
+        pivot_table = pivot_table.reset_index()
+
+        
+        st.dataframe(pivot_table.astype(str), use_container_width=True, hide_index=True)
         
         
         
