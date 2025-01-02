@@ -72,8 +72,8 @@ def draw_chart(data, sheet, recent=False):
 
 
 def cal_reviewNum(latest, previous):
-    latest_list = df_reviewnum.loc[df_reviewnum['주차별'] == latest].sum()[1:]
-    previous_list = df_reviewnum.loc[df_reviewnum['주차별'] == previous].sum()[1:]
+    latest_list = df_reviewnum.loc[df_reviewnum['year-week'] == latest].sum()[2:]
+    previous_list = df_reviewnum.loc[df_reviewnum['year-week'] == previous].sum()[2:]
       
     subtracts = []
     brands = ['홈던트하우스', '스피드랙', '슈랙', '피피랙']
@@ -135,8 +135,9 @@ if __name__ == '__main__':
         
         # 리뷰 수 상세
         df_reviewnum = data['리뷰수']
-        latest = df_reviewnum['주차별'].unique()[-1]
-        previous = df_reviewnum['주차별'].unique()[-2]
+        df_reviewnum['year-week'] = (df_reviewnum['year'].astype(str) + "." + df_reviewnum['주차별'].astype(str))
+        latest = df_reviewnum['year-week'].unique()[-1]
+        previous = df_reviewnum['year-week'].unique()[-2]
         
         latest_list, previous_list, subtracts = cal_reviewNum(latest, previous)
         latest_sum = latest_list.sum()
