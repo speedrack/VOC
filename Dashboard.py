@@ -202,7 +202,7 @@ if __name__ == '__main__':
         
         pivot_table = df_numdetail.pivot_table(
             index='brand',          # Rows: brand
-            columns=['year-week','scores'],       # Columns: scores
+            columns=['year_week','scores'],       # Columns: scores
             values='N',             # Values: N
             aggfunc='sum',          # Aggregation function: sum
             fill_value=0            # Fill NaN with 0
