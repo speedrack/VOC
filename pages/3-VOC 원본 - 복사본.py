@@ -33,13 +33,13 @@ def filtering_df(df):
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        브랜드_filter = st.selectbox('브랜드', ['전체'] + filtered_df['브랜드'].unique().tolist())
+        브랜드_filter = st.selectbox('브랜드', ['전체'] + sorted(filtered_df['브랜드'].unique().tolist()))
         
     with col2:
-        평점_filter = st.selectbox('평점', ['전체'] + filtered_df['평점'].unique().tolist())
+        평점_filter = st.selectbox('평점', ['전체'] + sorted(filtered_df['평점'].unique().tolist()))
         
-    with col2:
-        비고_filter = st.selectbox('비고', ['전체'] + filtered_df['비고'].unique().tolist())
+    with col3:
+        비고_filter = st.selectbox('비고', ['전체'] + sorted(filtered_df['비고'].unique().tolist()))
  
     
     if 브랜드_filter != '전체':
