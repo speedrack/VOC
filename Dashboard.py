@@ -115,22 +115,6 @@ if __name__ == '__main__':
     # 리뷰 수
     with tab1:
         
-        # 리뷰 수 그래프
-        st.write('\n\n')
-        st.subheader('주차별 리뷰 수')
-        chart_reviewnum = draw_chart(data, '리뷰수', recent=True)
-        st.plotly_chart(chart_reviewnum, use_container_width=True)
-        
-        with st.expander("전체 기간 그래프 보기"):
-            chart_reviewnum_total = draw_chart(data, '리뷰수', recent=False)
-            st.plotly_chart(chart_reviewnum_total, use_container_width=True)
-        
-        
-
-        
-        st.divider()
-        
-        
         ## 전주 대비 변화
         
         # 리뷰 수 상세
@@ -156,6 +140,21 @@ if __name__ == '__main__':
         col3, col4 = st.columns(2)
         col3.metric("슈랙", f"{latest_list[2]}" +" /" + f"{ratios[2]: .1%}", f"{ratios_delta[2]: .2%}" + "_" + f"{subtracts[2]}")
         col4.metric("피피랙", f"{latest_list[3]}" +" /" + f"{ratios[3]: .1%}", f"{ratios_delta[3]: .2%}" + "_" + f"{subtracts[3]}")
+
+
+        st.divider()
+        
+        
+        
+        # 리뷰 수 그래프
+        st.write('\n\n')
+        st.subheader('주차별 리뷰 수')
+        chart_reviewnum = draw_chart(data, '리뷰수', recent=True)
+        st.plotly_chart(chart_reviewnum, use_container_width=True)
+        
+        with st.expander("전체 기간 그래프 보기"):
+            chart_reviewnum_total = draw_chart(data, '리뷰수', recent=False)
+            st.plotly_chart(chart_reviewnum_total, use_container_width=True)
 
 
 
