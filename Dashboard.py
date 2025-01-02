@@ -123,7 +123,7 @@ if __name__ == '__main__':
         
         with st.expander("전체 기간 그래프 보기"):
             chart_reviewnum_total = draw_chart(data, '리뷰수', recent=False)
-            st.plotly_chart(chart_reviewnum, use_container_width=True)
+            st.plotly_chart(chart_reviewnum_total, use_container_width=True)
         
         
 
@@ -165,12 +165,12 @@ if __name__ == '__main__':
         # 평균 별점 그래프
         st.write('\n\n')
         st.subheader('주차별 평균 별점')
-        chart_reviewnum = draw_chart(data, '평균', recent=True)
-        st.plotly_chart(chart_reviewnum, use_container_width=True)
+        chart_avg = draw_chart(data, '평균', recent=True)
+        st.plotly_chart(chart_avg, use_container_width=True)
         
         with st.expander("전체 기간 그래프 보기"):
-            chart_reviewnum_total = draw_chart(data, '평균', recent=False)
-            st.plotly_chart(chart_reviewnum, use_container_width=True)
+            chart_avg_total = draw_chart(data, '평균', recent=False)
+            st.plotly_chart(chart_avg_total, use_container_width=True)
 
         
         st.divider()
