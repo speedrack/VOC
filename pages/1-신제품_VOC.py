@@ -26,7 +26,7 @@ def load_review(year, week):
 
 
 
-def filtering_df(df, keyword):
+def newproduct_df(df, keyword):
     
     filtered_df = df.loc[df['비고'] == keyword]
     
@@ -80,12 +80,12 @@ if __name__ == '__main__':
     st.title('신제품 VOC')
     
     st.write('스피드랙 MAX(경량랙)')
-    filtering_df(df, '경량랙(MAX)')
+    newproduct_df(df, '경량랙(MAX)')
     
     st.write('\n\n')
 
     st.write('홈던트하우스 드레스룸')
-    filtering_df(df, '드레스룸')
+    newproduct_df(df, '드레스룸')
     
 
 
