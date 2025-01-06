@@ -19,9 +19,12 @@ import os
 
 
 @st.cache_data
-def load_review(year, week):
-    data = pd.read_excel(fr"year/{year}/{week}/VOC {week} 원본.xlsx")
-    return data
+def load_review(year, week, product):
+    df = pd.read_excel(fr"year/{year}/{week}/VOC {week} {product} 원본.xlsx")
+    df['등록일'] = df['등록일'].astype(str)
+    df['등록일'] = df['등록일'].str.replace(' 00:00:00', '')
+    df['평점'] = round(df['평점']).astype(int)
+    return df
 
 
 
@@ -71,21 +74,32 @@ if __name__ == '__main__':
     week_selected = st.sidebar.selectbox('주차를 선택하세요.', weeklist, index=0)    
 
 
-    df = load_review(year_selected, week_selected)
-    df['등록일'] = df['등록일'].astype(str)
-    df['등록일'] = df['등록일'].str.replace(' 00:00:00', '')
-    df['평점'] = round(df['평점']).astype(int)
-    
+    df_max = load_review(year_selected, week_selected, '경량랙')
+    df_dress = load_review(year_selected, week_selected, '드레스룸')
+
+
+    # 특정 컬럼별로 다른 너비 설정
+    column_config = {
+        "리뷰": st.column_config.TextColumn(width=1000),
+        "URL": st.column_config.LinkColumn()
+    }
 
     st.title('신제품 VOC')
     
     st.write('스피드랙 MAX(경량랙)')
-    newproduct_df(df, '경량랙(MAX)')
-    
+    try:
+        st.dataframe(df_max, hide_index=True, height=600, column_config=column_config)
+    except:
+        st.write('...')
+        
+        
     st.write('\n\n')
 
     st.write('홈던트하우스 드레스룸')
-    newproduct_df(df, '드레스룸')
+    try:
+        st.dataframe(df_dress, hide_index=True, height=600, column_config=column_config)
+    except:
+        st.write('...')
     
 
 
