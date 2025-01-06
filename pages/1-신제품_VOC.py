@@ -28,8 +28,7 @@ def load_review(year, week):
 
 def filtering_df(df, keyword):
     
-    filtered_df = df.copy()
-    filtered_df = filtered_df.loc[filtered_df['비고'] == keyword]
+    filtered_df = df.loc[df['비고'] == keyword]
     
     
     # 특정 컬럼별로 다른 너비 설정
