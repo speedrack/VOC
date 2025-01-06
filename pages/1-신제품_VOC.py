@@ -18,7 +18,7 @@ import os
 
 
 
-@st.cache_data
+
 def load_review(year, week, product):
     df = pd.read_excel(fr"year/{year}/{week}/VOC {week} {product} 원본.xlsx")
     df['등록일'] = df['등록일'].astype(str)
