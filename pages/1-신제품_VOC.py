@@ -26,38 +26,41 @@ def load_review(year, week):
 
 
 
-def filtering_df(df):
+def filtering_df(df, keyword):
     
     filtered_df = df.copy()
-    # 필터링 옵션
-    col1, col2, col3 = st.columns(3)
+    filtered_df = filtered_df.loc[filtered_df['비고'] == keyword]
     
-    with col1:
-        브랜드_filter = st.selectbox('브랜드', ['전체'] + sorted(filtered_df['브랜드'].unique().tolist()))
+    
+    # # 필터링 옵션
+    # col1, col2, col3 = st.columns(3)
+    
+    # with col1:
+    #     브랜드_filter = st.selectbox('브랜드', ['전체'] + sorted(filtered_df['브랜드'].unique().tolist()))
         
-    with col2:
-        평점_filter = st.selectbox('평점', ['전체'] + sorted(filtered_df['평점'].unique().tolist()))
+    # with col2:
+    #     평점_filter = st.selectbox('평점', ['전체'] + sorted(filtered_df['평점'].unique().tolist()))
         
-    with col3:
-        비고_filter = st.selectbox('비고', ['전체'] + sorted(filtered_df['비고'].unique().tolist()))
+    # with col3:
+    #     비고_filter = st.selectbox('비고', ['전체'] + sorted(filtered_df['비고'].unique().tolist()))
  
     
-    if 브랜드_filter != '전체':
-        filtered_df = filtered_df[filtered_df['브랜드'] == 브랜드_filter]
+    # if 브랜드_filter != '전체':
+    #     filtered_df = filtered_df[filtered_df['브랜드'] == 브랜드_filter]
         
-    if 평점_filter != '전체':
-        filtered_df = filtered_df[filtered_df['평점'] == 평점_filter]
+    # if 평점_filter != '전체':
+    #     filtered_df = filtered_df[filtered_df['평점'] == 평점_filter]
    
-    if 비고_filter != '전체':
-        filtered_df = filtered_df[filtered_df['비고'] == 비고_filter]
+    # if 비고_filter != '전체':
+    #     filtered_df = filtered_df[filtered_df['비고'] == 비고_filter]
         
     
     
-    # 특정 컬럼별로 다른 너비 설정
-    column_config = {
-        "리뷰": st.column_config.TextColumn(width=1000),
-        "URL": st.column_config.LinkColumn()
-    }
+    # # 특정 컬럼별로 다른 너비 설정
+    # column_config = {
+    #     "리뷰": st.column_config.TextColumn(width=1000),
+    #     "URL": st.column_config.LinkColumn()
+    # }
 
 
     try:
@@ -99,12 +102,15 @@ if __name__ == '__main__':
     df['평점'] = round(df['평점']).astype(int)
     
 
-    st.title(f'VOC 원본')
-    st.caption('VOC 원본 확인 & 다운로드')
-    filtering_df(df)
-
-
+    st.title('신제품 VOC')
     
+    st.write('스피드랙 MAX(경량랙)')
+    filtering_df(df, '경량랙(MAX)')
+    
+    st.write('\n\n')
+
+    st.write('홈던트하우스 드레스룸')
+    filtering_df(df, '드레스룸')
     
 
 
