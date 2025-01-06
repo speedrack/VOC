@@ -18,8 +18,8 @@ import os
 
 
 
-
-def load_review(year, week, product):
+@st.cache_data
+def load_new_review(year, week, product):
     df = pd.read_excel(fr"year/{year}/{week}/VOC {week} {product} 원본.xlsx")
     df['등록일'] = df['등록일'].astype(str)
     df['등록일'] = df['등록일'].str.replace(' 00:00:00', '')
@@ -74,8 +74,8 @@ if __name__ == '__main__':
     week_selected = st.sidebar.selectbox('주차를 선택하세요.', weeklist, index=0)    
 
 
-    df_max = load_review(year_selected, week_selected, '경량랙')
-    df_dress = load_review(year_selected, week_selected, '드레스룸')
+    df_max = load_new_review(year_selected, week_selected, '경량랙')
+    df_dress = load_new_review(year_selected, week_selected, '드레스룸')
 
 
     # 특정 컬럼별로 다른 너비 설정
