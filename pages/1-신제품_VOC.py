@@ -32,35 +32,11 @@ def filtering_df(df, keyword):
     filtered_df = filtered_df.loc[filtered_df['비고'] == keyword]
     
     
-    # # 필터링 옵션
-    # col1, col2, col3 = st.columns(3)
-    
-    # with col1:
-    #     브랜드_filter = st.selectbox('브랜드', ['전체'] + sorted(filtered_df['브랜드'].unique().tolist()))
-        
-    # with col2:
-    #     평점_filter = st.selectbox('평점', ['전체'] + sorted(filtered_df['평점'].unique().tolist()))
-        
-    # with col3:
-    #     비고_filter = st.selectbox('비고', ['전체'] + sorted(filtered_df['비고'].unique().tolist()))
- 
-    
-    # if 브랜드_filter != '전체':
-    #     filtered_df = filtered_df[filtered_df['브랜드'] == 브랜드_filter]
-        
-    # if 평점_filter != '전체':
-    #     filtered_df = filtered_df[filtered_df['평점'] == 평점_filter]
-   
-    # if 비고_filter != '전체':
-    #     filtered_df = filtered_df[filtered_df['비고'] == 비고_filter]
-        
-    
-    
-    # # 특정 컬럼별로 다른 너비 설정
-    # column_config = {
-    #     "리뷰": st.column_config.TextColumn(width=1000),
-    #     "URL": st.column_config.LinkColumn()
-    # }
+    # 특정 컬럼별로 다른 너비 설정
+    column_config = {
+        "리뷰": st.column_config.TextColumn(width=1000),
+        "URL": st.column_config.LinkColumn()
+    }
 
 
     try:
