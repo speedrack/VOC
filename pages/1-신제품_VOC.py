@@ -28,7 +28,7 @@ def load_review(year, week):
 
 def newproduct_df(df, keyword):
     
-    filtered_df = df.loc[df['비고'] == keyword]
+    new_df = df.loc[df['비고'] == keyword]
     
     
     # 특정 컬럼별로 다른 너비 설정
@@ -39,7 +39,7 @@ def newproduct_df(df, keyword):
 
 
     try:
-        st.dataframe(filtered_df, hide_index=True, height=600, column_config=column_config)
+        st.dataframe(new_df, hide_index=True, height=600, column_config=column_config)
     except:
         st.write('...')
     
