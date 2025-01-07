@@ -73,9 +73,15 @@ if __name__ == '__main__':
     
     week_selected = st.sidebar.selectbox('주차를 선택하세요.', weeklist, index=0)    
 
-
-    df_max = load_new_review(year_selected, week_selected, '경량랙')
-    df_dress = load_new_review(year_selected, week_selected, '드레스룸')
+    try:    
+        df_max = load_new_review(year_selected, week_selected, '경량랙')
+    except:
+        df_max = '...'
+    
+    try:
+        df_dress = load_new_review(year_selected, week_selected, '드레스룸')
+    except:
+        df_dress = '...'
 
 
     # 특정 컬럼별로 다른 너비 설정
