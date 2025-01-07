@@ -42,7 +42,7 @@ def newproduct_df(df, keyword):
 
 
     try:
-        st.dataframe(new_df, hide_index=True, height=600, column_config=column_config)
+        st.dataframe(new_df, hide_index=True, column_config=column_config)
     except:
         st.write('...')
     
