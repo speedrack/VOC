@@ -17,15 +17,12 @@ import streamlit.components.v1 as components
 #from PIL import Image
 
 
-#df_raw, df, df_finished로 나눠서 처리하기
 
 
 
+# 그래프에서 작년, 올해 주차 구분이 안되고 있음!
 
-'''
-그래프에서 작년, 올해 주차 구분이 안되고 있음!
 
-'''
 
 
 
