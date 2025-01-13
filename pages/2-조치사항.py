@@ -22,6 +22,14 @@ import streamlit.components.v1 as components
 
 
 
+'''
+그래프에서 작년, 올해 주차 구분이 안되고 있음!
+
+'''
+
+
+
+
 
 @st.cache_data
 def load_data():
