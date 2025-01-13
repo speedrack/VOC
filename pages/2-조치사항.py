@@ -220,7 +220,7 @@ def create_graph_barLine(df):
     weekly_counts = df.groupby(['주', '대분류']).size().reset_index(name='갯수')
     
     # '주' 열에서 주 번호 추출하여 새로운 '주차' 열 생성
-    weekly_counts['주차'] = weekly_counts['주'].dt.week
+    weekly_counts['주차'] = f"{weekly_counts['주'].dt.year}.{weekly_counts['주'].dt.week}"
     
     
     # 꺾은선
