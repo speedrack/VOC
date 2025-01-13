@@ -30,10 +30,6 @@ def load_new_review(year, week):
 
 
 def newproduct_df(df, keyword):
-    
-    new_df = df.loc[df['비고'] == keyword]
-    
-    
     # 특정 컬럼별로 다른 너비 설정
     column_config = {
         "리뷰": st.column_config.TextColumn(width=1000),
@@ -42,7 +38,7 @@ def newproduct_df(df, keyword):
 
 
     try:
-        st.dataframe(new_df, hide_index=True, column_config=column_config)
+        st.dataframe(df, hide_index=True, column_config=column_config)
     except:
         st.write('...')
     
