@@ -265,11 +265,7 @@ def create_subtopic_metric(df, df_thisWeek, selected_topic):
 
 
 
-
 def create_graph_barLine(df):
-    
-    df = df.tail(15)
-    
     # 날짜 열을 datetime 형식으로 변환
     df['등록일'] = pd.to_datetime(df['등록일'])
     
@@ -285,8 +281,21 @@ def create_graph_barLine(df):
     # 주차 데이터를 정렬하기 위한 새로운 열 생성 (숫자 기반)
     weekly_counts['주차_정렬'] = weekly_counts['year'] * 100 + weekly_counts['week']
     
+    # 모든 주차와 대분류 조합 생성
+    all_periods = pd.date_range(df['등록일'].min(), df['등록일'].max(), freq='W-SAT').to_period('W-SAT')
+    all_categories = df['대분류'].unique()
+    full_index = pd.MultiIndex.from_product([all_periods, all_categories], names=['주', '대분류'])
+    
+    # 모든 조합을 포함한 데이터프레임 생성
+    weekly_counts = weekly_counts.set_index(['주', '대분류']).reindex(full_index, fill_value=0).reset_index()
+    
+    # '주' 열에서 연도 및 주차 정보 다시 생성
+    weekly_counts['year'] = weekly_counts['주'].dt.year
+    weekly_counts['week'] = weekly_counts['주'].dt.week
+    weekly_counts['주차'] = weekly_counts['year'].astype(str) + "." + weekly_counts['week'].astype(str) + "W"
+    
     # 주차 열 정렬 순서 설정
-    sorted_weeks = weekly_counts.sort_values('주차_정렬')['주차'].unique()  # 정렬된 주차 리스트 생성
+    sorted_weeks = weekly_counts.sort_values(['year', 'week'])['주차'].unique()  # 정렬된 주차 리스트 생성
     weekly_counts['주차'] = pd.Categorical(weekly_counts['주차'], categories=sorted_weeks, ordered=True)
     
     # 꺾은선 그래프
@@ -305,6 +314,7 @@ def create_graph_barLine(df):
     
     # Streamlit에 누적 막대 그래프 표시
     st.plotly_chart(fig_bar)
+
 
 
 
