@@ -240,6 +240,13 @@ def create_graph_barLine(df):
     weekly_counts['주차'] = weekly_counts['year'].astype(str) + '.' + weekly_counts['week'].astype(str) + 'W'
 
 
+    # '주차'를 정렬 가능한 형식으로 변환하여 정렬
+    weekly_counts['주차_numeric'] = weekly_counts['year'].astype(int) * 100 + weekly_counts['week'].astype(int)
+    weekly_counts.sort_values(by='주차_numeric', inplace=True)
+    
+    # 주차 열 삭제 (선택사항)
+    weekly_counts.drop(columns=['year', 'week', '주차_numeric'], inplace=True)
+
 
 
 
