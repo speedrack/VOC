@@ -222,45 +222,37 @@ def create_subtopic_metric(df, df_thisWeek, selected_topic):
 
 
 
-
 def create_graph_barLine(df):
     # 날짜 열을 datetime 형식으로 변환
     df['등록일'] = pd.to_datetime(df['등록일'])
-    
+
     # 주별로 그룹화하여 대분류의 갯수 세기 (일요일~토요일 기준)
     df['주'] = df['등록일'].dt.to_period('W-SAT')
     weekly_counts = df.groupby(['주', '대분류']).size().reset_index(name='갯수')
-    
-    
-    
-    
-        
+
     # '주차' 형식을 정렬 가능하도록 숫자로 처리
     weekly_counts['주차'] = weekly_counts['주'].apply(lambda x: f"{x.year}.{x.week:02}w")
-    weekly_counts['주차_숫자'] = weekly_counts['주'].apply(lambda x: x.year * 100 + x.week)
 
-    # 주차별 데이터 정렬
-    weekly_counts = weekly_counts.sort_values(by='주차_숫자')
-
-
+    # 주차를 범주형 데이터로 변환하여 균일한 간격 강제
+    unique_weeks = sorted(weekly_counts['주차'].unique())
+    weekly_counts['주차'] = pd.Categorical(weekly_counts['주차'], categories=unique_weeks, ordered=True)
 
     # 꺾은선 그래프 생성
     fig_line = px.line(
         weekly_counts,
-        x='주차_숫자',  # 정렬용 숫자 열 사용
+        x='주차',  # 범주형 데이터로 설정
         y='갯수',
         color='대분류',
         markers=True,
-        title='주별 대분류(꺾은선 - 최근 10주)',
-        labels={'주차_숫자': '주차', '갯수': '갯수'}
+        title='주별 대분류(꺾은선)',
+        labels={'주차': '주차', '갯수': '갯수'}
     )
 
-    # x축 레이블을 원하는 형식으로 변환
+    # x축 레이블 간격 균일화
     fig_line.update_layout(
         xaxis=dict(
-            tickmode='array',
-            tickvals=weekly_counts['주차_숫자'],
-            ticktext=weekly_counts['주차']  # 표시용 포맷 적용
+            type='category',  # 범주형으로 설정하여 간격 균일화
+            title='주차'
         )
     )
 
@@ -270,20 +262,19 @@ def create_graph_barLine(df):
     # 누적 막대 그래프 생성
     fig_bar = px.bar(
         weekly_counts,
-        x='주차_숫자',  # 정렬용 숫자 열 사용
+        x='주차',  # 범주형 데이터로 설정
         y='갯수',
         color='대분류',
-        title='주별 대분류(누적막대 - 최근 10주)',
-        labels={'주차_숫자': '주차', '갯수': '갯수'},
+        title='주별 대분류(누적막대)',
+        labels={'주차': '주차', '갯수': '갯수'},
         barmode='stack'
     )
 
-    # x축 레이블을 원하는 형식으로 변환
+    # x축 레이블 간격 균일화
     fig_bar.update_layout(
         xaxis=dict(
-            tickmode='array',
-            tickvals=weekly_counts['주차_숫자'],
-            ticktext=weekly_counts['주차']  # 표시용 포맷 적용
+            type='category',  # 범주형으로 설정하여 간격 균일화
+            title='주차'
         )
     )
 
