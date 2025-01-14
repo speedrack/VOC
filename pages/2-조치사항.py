@@ -236,18 +236,17 @@ def create_graph_barLine(df):
     
         
     # '주차' 형식을 정렬 가능하도록 숫자로 처리
-    weekly_counts['주차'] = weekly_counts['주'].apply(lambda x: f"{x.year}.{x.week:02}")
+    weekly_counts['주차'] = weekly_counts['주'].apply(lambda x: f"{x.year}.{x.week:02}w")
     weekly_counts['주차_숫자'] = weekly_counts['주'].apply(lambda x: x.year * 100 + x.week)
 
     # 주차별 데이터 정렬
     weekly_counts = weekly_counts.sort_values(by='주차_숫자')
 
-    # 최근 10개 데이터 선택
-    recent_10_weeks = weekly_counts.tail(10)
+
 
     # 꺾은선 그래프 생성
     fig_line = px.line(
-        recent_10_weeks,
+        weekly_counts,
         x='주차_숫자',  # 정렬용 숫자 열 사용
         y='갯수',
         color='대분류',
@@ -260,8 +259,8 @@ def create_graph_barLine(df):
     fig_line.update_layout(
         xaxis=dict(
             tickmode='array',
-            tickvals=recent_10_weeks['주차_숫자'],
-            ticktext=recent_10_weeks['주차']  # 표시용 포맷 적용
+            tickvals=weekly_counts['주차_숫자'],
+            ticktext=weekly_counts['주차']  # 표시용 포맷 적용
         )
     )
 
@@ -270,7 +269,7 @@ def create_graph_barLine(df):
 
     # 누적 막대 그래프 생성
     fig_bar = px.bar(
-        recent_10_weeks,
+        weekly_counts,
         x='주차_숫자',  # 정렬용 숫자 열 사용
         y='갯수',
         color='대분류',
@@ -283,8 +282,8 @@ def create_graph_barLine(df):
     fig_bar.update_layout(
         xaxis=dict(
             tickmode='array',
-            tickvals=recent_10_weeks['주차_숫자'],
-            ticktext=recent_10_weeks['주차']  # 표시용 포맷 적용
+            tickvals=weekly_counts['주차_숫자'],
+            ticktext=weekly_counts['주차']  # 표시용 포맷 적용
         )
     )
 
