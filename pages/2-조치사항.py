@@ -483,17 +483,12 @@ if __name__ == '__main__':
             st.subheader('조치사항 대분류')
             PieChart(df)
             
-            
-        with col2:
-            
             st.write('Metric')
             create_metric(df, df_thisWeek)
 
 
-        
-        st.divider()
-        
-        create_graph_barLine(df)
+        with col2:
+            create_graph_barLine(df)
         
         st.divider()
 
