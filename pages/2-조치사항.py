@@ -231,8 +231,19 @@ def create_graph_barLine(df):
     df['주'] = df['등록일'].dt.to_period('W-SAT')
     weekly_counts = df.groupby(['주', '대분류']).size().reset_index(name='갯수')
     
-    # '주' 열에서 주 번호 추출하여 새로운 '주차' 열 생성
-    weekly_counts['주차'] = weekly_counts.apply(lambda row: f"{row['주'].year}.{row['주'].week}W", axis=1)
+    
+    
+    
+    # '주' 열에서 주 번호와 연도를 추출하여 새로운 '주차' 열 생성
+    weekly_counts['year'] = weekly_counts['주'].dt.year
+    weekly_counts['week'] = weekly_counts['주'].dt.week
+    weekly_counts['주차'] = weekly_counts.apply(lambda row: f"{row['year']}.{row['week']}W", axis=1)
+
+    # '주차' 열을 기준으로 정렬
+    weekly_counts.sort_values(by=['year', 'week'], inplace=True)
+
+
+
 
     
     
