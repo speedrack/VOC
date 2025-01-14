@@ -281,12 +281,10 @@ def create_graph_barLine(df):
     
     # 주차 데이터를 정렬하기 위한 새로운 열 생성 (숫자 기반)
     weekly_counts['주차_정렬'] = weekly_counts['year'] * 100 + weekly_counts['week']
-    weekly_counts = weekly_counts.sort_values('주차_정렬')  # 주차 데이터 정렬
     
-    # '주차' 열을 카테고리형으로 변환해 정렬 순서 명시
-    weekly_counts['주차'] = pd.Categorical(weekly_counts['주차'], 
-                                           categories=weekly_counts.sort_values('주차_정렬')['주차'].unique(),
-                                           ordered=True)
+    # 주차 열 정렬 순서 설정
+    sorted_weeks = weekly_counts.sort_values('주차_정렬')['주차'].unique()  # 정렬된 주차 리스트 생성
+    weekly_counts['주차'] = pd.Categorical(weekly_counts['주차'], categories=sorted_weeks, ordered=True)
     
     # 꺾은선 그래프
     fig_line = px.line(weekly_counts, x='주차', y='갯수', color='대분류', markers=True,
