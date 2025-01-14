@@ -232,7 +232,8 @@ def create_graph_barLine(df):
     weekly_counts = df.groupby(['주', '대분류']).size().reset_index(name='갯수')
     
     # '주' 열에서 주 번호 추출하여 새로운 '주차' 열 생성
-    weekly_counts['주차'] = weekly_counts['주'].dt.week
+    weekly_counts['주차'] = weekly_counts.apply(lambda row: f"{row['주'].year}.{row['주'].week}W", axis=1)
+
     
     
     # 꺾은선
@@ -269,7 +270,9 @@ def create_subtopic_graph_barLine(df, selected_topic):
     weekly_counts = df.groupby(['주', '소분류']).size().reset_index(name='갯수')
     
     # '주' 열에서 주 번호 추출하여 새로운 '주차' 열 생성
-    weekly_counts['주차'] = weekly_counts['주'].dt.week
+    # weekly_counts['주차'] = weekly_counts['주'].dt.week
+    weekly_counts['주차'] = weekly_counts.apply(lambda row: f"{row['주'].year}.{row['주'].week}W", axis=1)
+
     
     
     # 꺾은선
