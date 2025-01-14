@@ -235,13 +235,14 @@ def create_graph_barLine(df):
     
     
         
-    # '주' 열에서 주 번호와 연도를 추출하여 정렬용 숫자 및 표시용 '주차' 생성
+    # '주차'와 정렬용 숫자 생성
     weekly_counts['주차_숫자'] = weekly_counts['주'].apply(lambda x: x.year * 100 + x.week)
     weekly_counts['주차'] = weekly_counts['주'].apply(lambda x: f"{x.year}.{x.week:02}w")
 
-    # '주차_숫자' 열 기준으로 정렬
+    # 주차를 정렬 가능한 카테고리형 데이터로 변환
     weekly_counts = weekly_counts.sort_values(by='주차_숫자')
-
+    unique_weeks = weekly_counts['주차'].unique()
+    weekly_counts['주차'] = pd.Categorical(weekly_counts['주차'], categories=unique_weeks, ordered=True)
 
 
 
