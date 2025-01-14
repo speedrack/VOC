@@ -221,51 +221,40 @@ def create_subtopic_metric(df, df_thisWeek, selected_topic):
 
 
 
-
 def create_graph_barLine(df):
-
     # 날짜 열을 datetime 형식으로 변환
     df['등록일'] = pd.to_datetime(df['등록일'])
-
+    
     # 주별로 그룹화하여 대분류의 갯수 세기 (일요일~토요일 기준)
     df['주'] = df['등록일'].dt.to_period('W-SAT')
     weekly_counts = df.groupby(['주', '대분류']).size().reset_index(name='갯수')
+    
+    
+    
+    
+    # '주' 열에서 주 번호와 연도를 추출하여 새로운 '주차' 열 생성
+    weekly_counts['주차'] = weekly_counts.apply(lambda row: f"{row['주'].year.astype(str)}.{row['주'].week}w", axis=1)
 
-    # 연도와 주차를 분리
-    weekly_counts['연도'] = weekly_counts['주'].apply(lambda x: x.year)
-    weekly_counts['주차'] = weekly_counts['주'].apply(lambda x: x.week)
-
-    # 데이터 정렬
-    weekly_counts = weekly_counts.sort_values(by=['연도', '주차'])
-
-    # 꺾은선 그래프 생성
-    fig_line = px.line(
-        weekly_counts,
-        x='주차',  # 주차를 x축으로
-        y='갯수',
-        color='대분류',
-        line_group='연도',  # 연도를 그룹으로 처리
-        title='연도별 주차 대분류 (꺾은선)',
-        labels={'주차': '주차', '갯수': '갯수', '연도': '연도'}
-    )
-
-    # Streamlit에 꺾은선 그래프 표시
-    st.plotly_chart(fig_line)
-
-    # 누적 막대 그래프 생성
-    fig_bar = px.bar(
-        weekly_counts,
-        x='주차',  # 주차를 x축으로
-        y='갯수',
-        color='대분류',
-        facet_col='연도',  # 연도를 별도 열로 분리하여 시각화
-        title='연도별 주차 대분류 (누적막대)',
-        labels={'주차': '주차', '갯수': '갯수', '연도': '연도'},
-        barmode='stack'
-    )
-
-    # Streamlit에 누적 막대 그래프 표시
-    st.plotly_chart(fig_bar)
+    
+    
+    # 꺾은선
+    fig = px.line(weekly_counts, x='주차', y='갯수', color='대분류', markers=True,
+                  title='주별 대분류(꺾은선)',
+                  labels={'주차': '주차', '갯수': '갯수'})
+    
+    # Streamlit에 그래프 표시
+    st.plotly_chart(fig)
+                    
+    
+    
+    # 누적막대
+    fig = px.bar(weekly_counts, x='주차', y='갯수', color='대분류', 
+                 title='주별 대분류(누적막대)', 
+                 labels={'주차': '주차', '갯수': '갯수'},
+                 barmode='stack')  # 누적 막대 그래프 설정
+    
+    # Streamlit에 그래프 표시
+    st.plotly_chart(fig)
 
 
 
