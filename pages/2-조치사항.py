@@ -326,44 +326,86 @@ def create_graph_barLine(df):
 
 
 
+# def create_subtopic_graph_barLine(df, selected_topic):
+#     df = df.loc[df['대분류'] == f'{selected_topic}']
+    
+#     # 날짜 열을 datetime 형식으로 변환
+#     df['등록일'] = pd.to_datetime(df['등록일'])
+    
+#     # 주별로 그룹화하여 대분류의 갯수 세기 (일요일~토요일 기준)
+#     df['주'] = df['등록일'].dt.to_period('W-SAT')
+#     weekly_counts = df.groupby(['주', '소분류']).size().reset_index(name='갯수')
+    
+#     # '주' 열에서 주 번호 추출하여 새로운 '주차' 열 생성
+#     # weekly_counts['주차'] = weekly_counts['주'].dt.week
+#     weekly_counts['주차'] = weekly_counts.apply(lambda row: f"{row['주'].year}.{row['주'].week}W", axis=1)
+
+    
+    
+#     # 꺾은선
+#     fig = px.line(weekly_counts, x='주차', y='갯수', color='소분류', markers=True,
+#                   title='주별 소분류(꺾은선)',
+#                   labels={'주차': '주차', '갯수': '갯수'})
+    
+#     # Streamlit에 그래프 표시
+#     st.plotly_chart(fig)
+                    
+    
+    
+#     # 누적막대
+#     fig = px.bar(weekly_counts, x='주차', y='갯수', color='소분류', 
+#                  title='주별 소분류(누적막대)', 
+#                  labels={'주차': '주차', '갯수': '갯수'},
+#                  barmode='stack')  # 누적 막대 그래프 설정
+    
+#     # Streamlit에 그래프 표시
+#     st.plotly_chart(fig)
+
+
+
+
 def create_subtopic_graph_barLine(df, selected_topic):
+    # 선택된 대분류 데이터 필터링
     df = df.loc[df['대분류'] == f'{selected_topic}']
     
     # 날짜 열을 datetime 형식으로 변환
     df['등록일'] = pd.to_datetime(df['등록일'])
     
-    # 주별로 그룹화하여 대분류의 갯수 세기 (일요일~토요일 기준)
+    # 주별로 그룹화하여 소분류의 갯수 세기 (일요일~토요일 기준)
     df['주'] = df['등록일'].dt.to_period('W-SAT')
     weekly_counts = df.groupby(['주', '소분류']).size().reset_index(name='갯수')
     
+    # 모든 주차와 소분류 조합 생성
+    all_periods = pd.date_range(df['등록일'].min(), df['등록일'].max(), freq='W-SAT').to_period('W-SAT')
+    all_subcategories = df['소분류'].unique()
+    full_index = pd.MultiIndex.from_product([all_periods, all_subcategories], names=['주', '소분류'])
+    
+    # 모든 조합을 포함한 데이터프레임 생성 및 누락된 값 0으로 채우기
+    weekly_counts = weekly_counts.set_index(['주', '소분류']).reindex(full_index, fill_value=0).reset_index()
+    
     # '주' 열에서 주 번호 추출하여 새로운 '주차' 열 생성
-    # weekly_counts['주차'] = weekly_counts['주'].dt.week
     weekly_counts['주차'] = weekly_counts.apply(lambda row: f"{row['주'].year}.{row['주'].week}W", axis=1)
-
     
+    # 주차 정렬을 위한 순서 설정
+    sorted_weeks = weekly_counts.sort_values(['주'])['주차'].unique()  # 정렬된 주차 리스트 생성
+    weekly_counts['주차'] = pd.Categorical(weekly_counts['주차'], categories=sorted_weeks, ordered=True)
     
-    # 꺾은선
-    fig = px.line(weekly_counts, x='주차', y='갯수', color='소분류', markers=True,
-                  title='주별 소분류(꺾은선)',
-                  labels={'주차': '주차', '갯수': '갯수'})
+    # 꺾은선 그래프
+    fig_line = px.line(weekly_counts, x='주차', y='갯수', color='소분류', markers=True,
+                       title='주별 소분류(꺾은선)',
+                       labels={'주차': '주차', '갯수': '갯수'})
     
-    # Streamlit에 그래프 표시
-    st.plotly_chart(fig)
-                    
+    # Streamlit에 꺾은선 그래프 표시
+    st.plotly_chart(fig_line)
     
+    # 누적 막대 그래프
+    fig_bar = px.bar(weekly_counts, x='주차', y='갯수', color='소분류',
+                     title='주별 소분류(누적막대)',
+                     labels={'주차': '주차', '갯수': '갯수'},
+                     barmode='stack')
     
-    # 누적막대
-    fig = px.bar(weekly_counts, x='주차', y='갯수', color='소분류', 
-                 title='주별 소분류(누적막대)', 
-                 labels={'주차': '주차', '갯수': '갯수'},
-                 barmode='stack')  # 누적 막대 그래프 설정
-    
-    # Streamlit에 그래프 표시
-    st.plotly_chart(fig)
-
-
-
-
+    # Streamlit에 누적 막대 그래프 표시
+    st.plotly_chart(fig_bar)
 
 
 
