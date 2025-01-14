@@ -218,7 +218,15 @@ def create_subtopic_metric(df, df_thisWeek, selected_topic):
 
 
 
+
+
+
+
+
 def create_graph_barLine(df):
+    import pandas as pd
+    import plotly.express as px
+    import streamlit as st
 
     # 날짜 열을 datetime 형식으로 변환
     df['등록일'] = pd.to_datetime(df['등록일'])
@@ -227,30 +235,32 @@ def create_graph_barLine(df):
     df['주'] = df['등록일'].dt.to_period('W-SAT')
     weekly_counts = df.groupby(['주', '대분류']).size().reset_index(name='갯수')
 
-    # '주차' 형식 생성 (정렬용 숫자 및 표시용 텍스트 분리)
-    weekly_counts['주차_숫자'] = weekly_counts['주'].apply(lambda x: x.year * 100 + x.week)  # 정렬용
-    weekly_counts['주차'] = weekly_counts['주'].apply(lambda x: f"{x.year}.{x.week:02}w")  # 표시용
+    # '연도.주차' 형식으로 병합
+    weekly_counts['연도_주차'] = weekly_counts['주'].apply(lambda x: f"{x.year}.{x.week:02}")
 
-    # 주차를 범주형으로 설정하여 균일 간격 강제
-    unique_weeks = weekly_counts['주차'].unique()
-    weekly_counts['주차'] = pd.Categorical(weekly_counts['주차'], categories=unique_weeks, ordered=True)
+    # 범주형으로 변환하여 순서 강제
+    weekly_counts['연도_주차'] = pd.Categorical(
+        weekly_counts['연도_주차'],
+        categories=sorted(weekly_counts['연도_주차'].unique()),
+        ordered=True
+    )
 
     # 꺾은선 그래프 생성
     fig_line = px.line(
         weekly_counts,
-        x='주차',  # x축을 범주형으로 처리
+        x='연도_주차',  # 병합된 연도.주차를 x축으로
         y='갯수',
         color='대분류',
         markers=True,
-        title='주별 대분류(꺾은선)',
-        labels={'주차': '주차', '갯수': '갯수'}
+        title='연도.주차별 대분류 (꺾은선)',
+        labels={'연도_주차': '연도.주차', '갯수': '갯수'}
     )
 
-    # x축 간격 균일화
+    # x축 레이블 간격 균일화
     fig_line.update_layout(
         xaxis=dict(
             type='category',  # 범주형으로 처리
-            title='주차'
+            title='연도.주차'
         )
     )
 
@@ -260,19 +270,19 @@ def create_graph_barLine(df):
     # 누적 막대 그래프 생성
     fig_bar = px.bar(
         weekly_counts,
-        x='주차',  # x축을 범주형으로 처리
+        x='연도_주차',  # 병합된 연도.주차를 x축으로
         y='갯수',
         color='대분류',
-        title='주별 대분류(누적막대)',
-        labels={'주차': '주차', '갯수': '갯수'},
+        title='연도.주차별 대분류 (누적막대)',
+        labels={'연도_주차': '연도.주차', '갯수': '갯수'},
         barmode='stack'
     )
 
-    # x축 간격 균일화
+    # x축 레이블 간격 균일화
     fig_bar.update_layout(
         xaxis=dict(
             type='category',  # 범주형으로 처리
-            title='주차'
+            title='연도.주차'
         )
     )
 
