@@ -235,17 +235,8 @@ def create_graph_barLine(df):
     
     
     # '주' 열에서 주 번호와 연도를 추출하여 새로운 '주차' 열 생성
-    weekly_counts['year'] = weekly_counts['주'].dt.year
-    weekly_counts['week'] = weekly_counts['주'].dt.week
-    weekly_counts['주차'] = weekly_counts['year'].astype(str) + '.' + weekly_counts['week'].astype(str) + 'W'
+    weekly_counts['주차'] = weekly_counts.apply(lambda row: f"{row['주'].year}.{row['주'].week}주", axis=1)
 
-
-    # '주차'를 정렬 가능한 형식으로 변환하여 정렬
-    weekly_counts['주차_numeric'] = weekly_counts['year'].astype(int) * 100 + weekly_counts['week'].astype(int)
-    weekly_counts.sort_values(by='주차_numeric', inplace=True)
-    
-    # 주차 열 삭제 (선택사항)
-    weekly_counts.drop(columns=['year', 'week', '주차_numeric'], inplace=True)
 
 
 
