@@ -536,6 +536,7 @@ if __name__ == '__main__':
         
         with col1:
             st.subheader('조치사항 대분류')
+            st.caption('범례 더블클릭 시 원하는 항목만 확인 가능')
             PieChart(df)
             
             st.write('Metric')
