@@ -236,7 +236,7 @@ def create_graph_barLine(df):
     
         
     # '주' 열에서 주 번호 추출하여 새로운 '연도.주차' 열 생성
-    weekly_counts['주차'] = weekly_counts.apply(lambda row: f"{row['주'].week}w.{row['주'].year[2:]}", axis=1)
+    weekly_counts['주차'] = weekly_counts.apply(lambda row: f"{row['주'].week}w.{row['주'].year}", axis=1)
 
 
 
