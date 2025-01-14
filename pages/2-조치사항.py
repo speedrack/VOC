@@ -235,34 +235,61 @@ def create_graph_barLine(df):
     
     
         
-    # '주' 열에서 주 번호 추출하여 새로운 '연도.주차' 열 생성
-    weekly_counts['주차'] = weekly_counts.apply(lambda row: f"{row['주'].week:02}.{row['주'].year}", axis=1)
+    # '주차' 형식을 정렬 가능하도록 숫자로 처리
+    weekly_counts['주차'] = weekly_counts['주'].apply(lambda x: f"{x.year}.{x.week:02}")
+    weekly_counts['주차_숫자'] = weekly_counts['주'].apply(lambda x: x.year * 100 + x.week)
 
+    # 주차별 데이터 정렬
+    weekly_counts = weekly_counts.sort_values(by='주차_숫자')
 
+    # 최근 10개 데이터 선택
+    recent_10_weeks = weekly_counts.tail(10)
 
+    # 꺾은선 그래프 생성
+    fig_line = px.line(
+        recent_10_weeks,
+        x='주차_숫자',  # 정렬용 숫자 열 사용
+        y='갯수',
+        color='대분류',
+        markers=True,
+        title='주별 대분류(꺾은선 - 최근 10주)',
+        labels={'주차_숫자': '주차', '갯수': '갯수'}
+    )
 
+    # x축 레이블을 원하는 형식으로 변환
+    fig_line.update_layout(
+        xaxis=dict(
+            tickmode='array',
+            tickvals=recent_10_weeks['주차_숫자'],
+            ticktext=recent_10_weeks['주차']  # 표시용 포맷 적용
+        )
+    )
 
+    # Streamlit에 꺾은선 그래프 표시
+    st.plotly_chart(fig_line)
 
-    
-    
-    # 꺾은선
-    fig = px.line(weekly_counts, x='주차', y='갯수', color='대분류', markers=True,
-                  title='주별 대분류(꺾은선)',
-                  labels={'주차': '주차', '갯수': '갯수'})
-    
-    # Streamlit에 그래프 표시
-    st.plotly_chart(fig)
-                    
-    
-    
-    # 누적막대
-    fig = px.bar(weekly_counts, x='주차', y='갯수', color='대분류', 
-                 title='주별 대분류(누적막대)', 
-                 labels={'주차': '주차', '갯수': '갯수'},
-                 barmode='stack')  # 누적 막대 그래프 설정
-    
-    # Streamlit에 그래프 표시
-    st.plotly_chart(fig)
+    # 누적 막대 그래프 생성
+    fig_bar = px.bar(
+        recent_10_weeks,
+        x='주차_숫자',  # 정렬용 숫자 열 사용
+        y='갯수',
+        color='대분류',
+        title='주별 대분류(누적막대 - 최근 10주)',
+        labels={'주차_숫자': '주차', '갯수': '갯수'},
+        barmode='stack'
+    )
+
+    # x축 레이블을 원하는 형식으로 변환
+    fig_bar.update_layout(
+        xaxis=dict(
+            tickmode='array',
+            tickvals=recent_10_weeks['주차_숫자'],
+            ticktext=recent_10_weeks['주차']  # 표시용 포맷 적용
+        )
+    )
+
+    # Streamlit에 누적 막대 그래프 표시
+    st.plotly_chart(fig_bar)
 
 
 
