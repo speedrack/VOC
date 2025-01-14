@@ -232,12 +232,15 @@ def create_graph_barLine(df):
     weekly_counts = df.groupby(['주', '대분류']).size().reset_index(name='갯수')
     
     
+    
+    
         
-    # '주' 열에서 주 번호와 연도를 추출하여 '주차' 열 생성
+    # '주' 열에서 주 번호와 연도를 추출하여 정렬용 숫자 및 표시용 '주차' 생성
+    weekly_counts['주차_숫자'] = weekly_counts['주'].apply(lambda x: x.year * 100 + x.week)
     weekly_counts['주차'] = weekly_counts['주'].apply(lambda x: f"{x.year}.{x.week:02}w")
 
-    # '주' 열을 기준으로 데이터 정렬
-    weekly_counts = weekly_counts.sort_values(by='주')
+    # '주차_숫자' 열 기준으로 정렬
+    weekly_counts = weekly_counts.sort_values(by='주차_숫자')
 
 
 
