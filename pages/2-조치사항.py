@@ -267,6 +267,9 @@ def create_subtopic_metric(df, df_thisWeek, selected_topic):
 
 
 def create_graph_barLine(df):
+    
+    df = df.tail(20)
+    
     # 날짜 열을 datetime 형식으로 변환
     df['등록일'] = pd.to_datetime(df['등록일'])
     
