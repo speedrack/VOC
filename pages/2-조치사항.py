@@ -268,7 +268,7 @@ def create_subtopic_metric(df, df_thisWeek, selected_topic):
 
 def create_graph_barLine(df):
     # 날짜 열을 datetime 형식으로 변환
-    df['등록일'] = pd.to_datetime(df['등록일']).tail(100)
+    df['등록일'] = pd.to_datetime(df['등록일'])
     
     # 주별로 그룹화하여 대분류의 갯수 세기 (일요일~토요일 기준)
     df['주'] = df['등록일'].dt.to_period('W-SAT')
@@ -483,17 +483,20 @@ if __name__ == '__main__':
             st.subheader('조치사항 대분류')
             PieChart(df)
             
-            st.write('Metric')
-            create_metric(df, df_thisWeek)
-            
             
         with col2:
-            create_graph_barLine(df)
+            
+            st.write('Metric')
+            create_metric(df, df_thisWeek)
+
 
         
         st.divider()
-                
         
+        create_graph_barLine(df)
+        
+        st.divider()
+
         with st.expander('조치사항 원본 확인'):
             filtering_df(df)
         
