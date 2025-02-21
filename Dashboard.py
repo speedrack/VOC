@@ -33,6 +33,8 @@ def draw_chart(data, sheet, recent=False):
     speed = data[sheet]['스피드랙']
     shu = data[sheet]['슈랙']
     pp = data[sheet]['피피랙']
+    s_max = data[sheet]['스피드랙MAX']
+    
     
     # 최근 12개만 선택
     if recent:
@@ -41,6 +43,7 @@ def draw_chart(data, sheet, recent=False):
         speed = speed.tail(12)
         shu = shu.tail(12)
         pp = pp.tail(12)
+        s_max = s_max.tail(12)
     
     # 그래프 그리기
     fig = go.Figure()
@@ -60,6 +63,11 @@ def draw_chart(data, sheet, recent=False):
                     mode='lines+markers',
                     name='피피랙'))
     
+    fig.add_trace(go.Scatter(x=weeks, y=s_max,
+                    mode='lines+markers',
+                    name='스피드랙MAX'))
+    
+    
     # 그래프 설정
     fig.update_layout(
         xaxis_title='주차',
@@ -76,7 +84,7 @@ def cal_reviewNum(latest, previous):
     previous_list = df_reviewnum.loc[df_reviewnum['year-week'] == previous].sum()[2:6]
       
     subtracts = []
-    brands = ['홈던트하우스', '스피드랙', '슈랙', '피피랙']
+    brands = ['홈던트하우스', '스피드랙', '슈랙', '피피랙', '스피드랙MAX']
     for brand in brands:
         sub = latest_list[brand] - previous_list[brand]
         subtracts.append(sub)
@@ -90,7 +98,7 @@ def cal_ratio(latest_list, previous_list):
     ratios = []
     ratios_delta = []
 
-    for i in range(4):
+    for i in range(5):
         ratio = latest_list[i]/latest_sum
         ratio_previous = previous_list[i]/previous_sum
         ratio_delta = ratio - ratio_previous
@@ -132,12 +140,13 @@ if __name__ == '__main__':
         ratios, ratios_delta = cal_ratio(latest_list, previous_list)
         st.metric(f"{latest} 총 리뷰 수", f"{latest_sum}", f"{latest_sum - previous_sum}")
 
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         col1.metric("홈던트하우스", f"{latest_list[0]}" +" /" + f"{ratios[0]: .1%}", f"{ratios_delta[0]: .2%}" + "_" + f"{subtracts[0]}")
         col2.metric("스피드랙", f"{latest_list[1]}" +" /" + f"{ratios[1]: .1%}", f"{ratios_delta[1]: .2%}" + "_" + f"{subtracts[1]}")
+        col3.metric("스피드랙MAX", f"{latest_list[4]}" +" /" + f"{ratios[4]: .1%}", f"{ratios_delta[4]: .2%}" + "_" + f"{subtracts[4]}")
 
         
-        col3, col4 = st.columns(2)
+        col4, col5 = st.columns(2)
         col3.metric("슈랙", f"{latest_list[2]}" +" /" + f"{ratios[2]: .1%}", f"{ratios_delta[2]: .2%}" + "_" + f"{subtracts[2]}")
         col4.metric("피피랙", f"{latest_list[3]}" +" /" + f"{ratios[3]: .1%}", f"{ratios_delta[3]: .2%}" + "_" + f"{subtracts[3]}")
 
