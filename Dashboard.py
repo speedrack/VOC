@@ -80,8 +80,8 @@ def draw_chart(data, sheet, recent=False):
 
 
 def cal_reviewNum(latest, previous):
-    latest_list = df_reviewnum.loc[df_reviewnum['year-week'] == latest].sum()[2:6]
-    previous_list = df_reviewnum.loc[df_reviewnum['year-week'] == previous].sum()[2:6]
+    latest_list = df_reviewnum.loc[df_reviewnum['year-week'] == latest].sum()[2:7]
+    previous_list = df_reviewnum.loc[df_reviewnum['year-week'] == previous].sum()[2:7]
       
     subtracts = []
     brands = ['홈던트하우스', '스피드랙', '슈랙', '피피랙', '스피드랙MAX']
