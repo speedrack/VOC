@@ -139,7 +139,6 @@ if __name__ == '__main__':
         st.subheader('전주 대비 변화')    
         ratios, ratios_delta = cal_ratio(latest_list, previous_list)
         st.metric(f"{latest} 총 리뷰 수", f"{latest_sum}", f"{latest_sum - previous_sum}")
-        st.write('\n\n')
         
         col1, col2 = st.columns(2)
         col1.metric("홈던트하우스", f"{latest_list[0]}" +" /" + f"{ratios[0]: .1%}", f"{ratios_delta[0]: .2%}" + "_" + f"{subtracts[0]}")
@@ -151,7 +150,7 @@ if __name__ == '__main__':
         col4.metric("피피랙", f"{latest_list[3]}" +" /" + f"{ratios[3]: .1%}", f"{ratios_delta[3]: .2%}" + "_" + f"{subtracts[3]}")
 
         col5 = st.columns(1)[0]
-        col5.metric("스피드랙MAX", f"{latest_list[4]}" +" /" + f"{ratios[4]: .1%}", f"{ratios_delta[4]: .2%}" + "_" + f"{subtracts[4]}")
+        col5.metric("스피드랙MAX", f"{latest_list[4]: .0f}" +" /" + f"{ratios[4]: .1%}", f"{ratios_delta[4]: .2%}" + "_" + f"{subtracts[4]}")
 
         st.divider()
         
