@@ -138,7 +138,7 @@ if __name__ == '__main__':
         
         st.subheader('전주 대비 변화')    
         ratios, ratios_delta = cal_ratio(latest_list, previous_list)
-        latest_sum = str(latest_sum).replace('.0', '')
+        latest_sum = int(str(latest_sum).replace('.0', ''))
         st.metric(f"{latest} 총 리뷰 수", f"{latest_sum}", f"{latest_sum - previous_sum}")
         
         col1, col2 = st.columns(2)
