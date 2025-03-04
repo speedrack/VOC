@@ -150,7 +150,7 @@ if __name__ == '__main__':
         col4.metric("피피랙", f"{latest_list[3]}" +" /" + f"{ratios[3]: .1%}", f"{ratios_delta[3]: .2%}" + "_" + f"{subtracts[3]}")
 
         col5 = st.columns(1)[0]
-        col5.metric("스피드랙MAX", f"{latest_list[4]: .0f}" +" /" + f"{ratios[4]: .1%}", f"{ratios_delta[4]: .2%}" + "_" + f"{subtracts[4]}")
+        col5.metric("스피드랙MAX", f"{latest_list[4]:.0f}" +" /" + f"{ratios[4]: .1%}", f"{ratios_delta[4]: .2%}" + "_" + f"{subtracts[4]}")
 
         st.divider()
         
