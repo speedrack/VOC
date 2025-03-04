@@ -68,7 +68,7 @@ if __name__ == '__main__':
     df = load_review(year_selected, week_selected)
     
     # 브랜드 선택
-    brand_selected = st.sidebar.selectbox('브랜드를 선택하세요.', ['홈던트하우스', '스피드랙', '슈랙', '피피랙'])
+    brand_selected = st.sidebar.selectbox('브랜드를 선택하세요.', ['홈던트하우스', '스피드랙', '슈랙', '피피랙', '스피드랙MAX'])
     brand_df = df.loc[df['브랜드']==brand_selected]
     
     
