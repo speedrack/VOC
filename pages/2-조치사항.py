@@ -42,6 +42,8 @@ def cal_thisweekdf(df):
 
     days = [today - timedelta(days=(diff+i)) for i in range(1, 8)]
     days = list(map(str, days))
+    
+    df['등록일'] = df['등록일'].str.replace(' 00:00:00', '')
     df_thisWeek = df.loc[df['등록일'].isin(days)].reset_index(drop=True)
     df_thisWeek = df_thisWeek.sort_values(by=['대분류', '소분류'], ignore_index=True)
     df_thisWeek['등록일'] = pd.to_datetime(df_thisWeek['등록일']).dt.date 
