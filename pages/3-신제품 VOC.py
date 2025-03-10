@@ -14,7 +14,7 @@ from datetime import date
 from datetime import timedelta
 import streamlit.components.v1 as components
 import os
-
+import re
 
 
 
@@ -44,7 +44,10 @@ def newproduct_df(df, keyword):
     
     
 
-
+def extract_week_number(week):
+    # 숫자만 추출해서 정수로 변환
+    match = re.search(r'(\d+)', week)
+    return int(match.group()) if match else 0
 
 
 
@@ -60,14 +63,17 @@ if __name__ == '__main__':
     yearlist = sorted(yearlist, reverse=True)
     year_selected = st.sidebar.selectbox('연도를 선택하세요.', yearlist, index=0)
     
+
+    
     week_dir = os.path.join(year_dir, year_selected)
     if os.path.exists(week_dir):
-        weeklist = os.listdir(week_dir)  
-        weeklist = sorted(weeklist, reverse=True)  
+        weeklist = os.listdir(week_dir)
+        # 숫자를 기준으로 내림차순 정렬
+        weeklist = sorted(weeklist, key=extract_week_number, reverse=True)
     else:
         weeklist = []
     
-    week_selected = st.sidebar.selectbox('주차를 선택하세요.', weeklist, index=0)    
+    week_selected = st.sidebar.selectbox('주차를 선택하세요.', weeklist, index=0)   
 
     try:    
         df_new = load_new_review(year_selected, week_selected)
