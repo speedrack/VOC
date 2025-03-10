@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import re
 
 @st.cache_data
 def load_review(year, week):
@@ -38,7 +39,10 @@ def notable_summary(year, week, brand):
     return txt
 
 
-
+def extract_week_number(week):
+    # 숫자만 추출해서 정수로 변환
+    match = re.search(r'(\d+)', week)
+    return int(match.group()) if match else 0
 
 
 
@@ -55,12 +59,13 @@ if __name__ == '__main__':
 
     week_dir = os.path.join(year_dir, year_selected)
     if os.path.exists(week_dir):
-        weeklist = os.listdir(week_dir)  
-        weeklist = sorted(weeklist, reverse=True)  
+        weeklist = os.listdir(week_dir)
+        # 숫자를 기준으로 내림차순 정렬
+        weeklist = sorted(weeklist, key=extract_week_number, reverse=True)
     else:
         weeklist = []
     
-    week_selected = st.sidebar.selectbox('주차를 선택하세요.', weeklist, index=0)
+    week_selected = st.sidebar.selectbox('주차를 선택하세요.', weeklist, index=0)   
 
     
     
