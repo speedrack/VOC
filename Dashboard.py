@@ -202,11 +202,9 @@ if __name__ == '__main__':
             reverse=True
         )
         
-        # 'year_week' 형식으로 변환
-        sort_numdetail_str = [f"{yw[0]}.{yw[1]}w" for yw in sort_numdetail]
         
         # 멀티셀렉트 박스
-        week_selected = st.multiselect('주차들을 선택하세요.', sort_numdetail_str, default=sort_numdetail_str[0])
+        week_selected = st.multiselect('주차들을 선택하세요.', sort_numdetail, default=sort_numdetail[0])
                 
         
         df_numdetail['scores'] = df_numdetail['scores'].astype('str')
