@@ -192,16 +192,19 @@ if __name__ == '__main__':
         st.subheader('주차/브랜드별 별점 상세')
         df_numdetail = data['별점세부'].copy()
         # year와 week를 결합하여 정렬
-        df_numdetail['year_week'] = (df_numdetail['year'].astype(str) + "." + df_numdetail['week'].astype(str))
-
+        df_numdetail['year_week'] = df_numdetail['year'].astype(int) * 100 + df_numdetail['week'].astype(int)
+        
         # 정렬 기준 생성 (연도와 주차를 고려하여 최신순 정렬)
         sort_numdetail = sorted(
             df_numdetail['year_week'].unique(),
             reverse=True)
-    
-        # 멀티셀렉트 박스
-        week_selected = st.multiselect('주차들을 선택하세요.', sort_numdetail, default=sort_numdetail[0])
         
+        # year_week를 다시 문자열 형태로 변환
+        sort_numdetail_str = [f"{yw // 100}.{yw % 100}w" for yw in sort_numdetail]
+        
+        # 멀티셀렉트 박스
+        week_selected = st.multiselect('주차들을 선택하세요.', sort_numdetail_str, default=sort_numdetail_str[0])
+                
         
         df_numdetail['scores'] = df_numdetail['scores'].astype('str')
         if week_selected:
