@@ -198,7 +198,7 @@ if __name__ == '__main__':
         # 정렬 기준 생성 (연도와 주차를 고려하여 최신순 정렬)
         sort_numdetail = sorted(
             df_numdetail['year_week'].unique(),
-            key=lambda x: (int(x.split('.')[0]), int(x.split('.')[1])),
+            key=lambda x: (int(x.split('.')[0]), int(x.split('.')[1][:-1])),
             reverse=True
         )
         
