@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
     # 3점 이하 불만 리뷰 요약 및 df 출력
     with tab2: 
-        st.subheader("3점 이하 리뷰 요약")
+        st.subheader("3점 이하 리뷰")
         
         # brand_neg_summary = neg_summary(year_selected, week_selected, brand_selected)
         # st.write(brand_neg_summary)
