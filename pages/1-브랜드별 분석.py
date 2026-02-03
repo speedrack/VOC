@@ -95,18 +95,18 @@ if __name__ == '__main__':
     with tab2: 
         st.subheader("3점 이하 리뷰 요약")
         
-        brand_neg_summary = neg_summary(year_selected, week_selected, brand_selected)
-        st.write(brand_neg_summary)
+        # brand_neg_summary = neg_summary(year_selected, week_selected, brand_selected)
+        # st.write(brand_neg_summary)
     
         
-        st.write('\n\n')
+        # st.write('\n\n')
         
-        if st.button('리뷰 원본 보기', type='primary'):
-            neg_df = brand_df.loc[brand_df['평점'] <= 3]
-            neg_df['평점'] = round(neg_df['평점'], 0)
-            neg_df = neg_df.reset_index(drop=True)
-            
-            st.dataframe(data=neg_df)
+        # if st.button('리뷰 원본 보기', type='primary'):
+        neg_df = brand_df.loc[brand_df['평점'] <= 3]
+        neg_df['평점'] = round(neg_df['평점'], 0)
+        neg_df = neg_df.reset_index(drop=True)
+        
+        st.dataframe(data=neg_df)
     
         
     # 주제별 요약
