@@ -143,16 +143,16 @@ if __name__ == '__main__':
         
         col1, col2 = st.columns(2)
         col1.metric("홈던트하우스", f"{latest_list.iloc[0]}" +" /" + f"{ratios[0]: .1%}", f"{ratios_delta[0]: .2%}" + "_" + f"{subtracts[0]}")
-        col2.metric("스피드랙", f"{latest_list[1]}" +" /" + f"{ratios[1]: .1%}", f"{ratios_delta[1]: .2%}" + "_" + f"{subtracts[1]}")
+        col2.metric("스피드랙", f"{latest_list.iloc[1]}" +" /" + f"{ratios[1]: .1%}", f"{ratios_delta[1]: .2%}" + "_" + f"{subtracts[1]}")
 
         
         col3, col4 = st.columns(2)
-        col3.metric("슈랙", f"{latest_list[2]}" +" /" + f"{ratios[2]: .1%}", f"{ratios_delta[2]: .2%}" + "_" + f"{subtracts[2]}")
-        col4.metric("피피랙", f"{latest_list[3]}" +" /" + f"{ratios[3]: .1%}", f"{ratios_delta[3]: .2%}" + "_" + f"{subtracts[3]}")
+        col3.metric("슈랙", f"{latest_list.iloc[2]}" +" /" + f"{ratios[2]: .1%}", f"{ratios_delta[2]: .2%}" + "_" + f"{subtracts[2]}")
+        col4.metric("피피랙", f"{latest_list.iloc[3]}" +" /" + f"{ratios[3]: .1%}", f"{ratios_delta[3]: .2%}" + "_" + f"{subtracts[3]}")
 
         col5 = st.columns(1)[0]
         latest_list[4] = str(latest_list[4]).replace('.0', '')
-        col5.metric("스피드랙MAX", f"{latest_list[4]}" +" /" + f"{ratios[4]: .1%}", f"{ratios_delta[4]: .2%}" + "_" + f"{subtracts[4]}")
+        col5.metric("스피드랙MAX", f"{latest_list.iloc[4]}" +" /" + f"{ratios[4]: .1%}", f"{ratios_delta[4]: .2%}" + "_" + f"{subtracts[4]}")
 
         st.divider()
         
