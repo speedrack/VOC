@@ -142,7 +142,7 @@ if __name__ == '__main__':
         st.metric(f"{latest} 총 리뷰 수", f"{_latest_sum}", f"{latest_sum - previous_sum}")
         
         col1, col2 = st.columns(2)
-        col1.metric("홈던트하우스", f"{latest_list[0]}" +" /" + f"{ratios[0]: .1%}", f"{ratios_delta[0]: .2%}" + "_" + f"{subtracts[0]}")
+        col1.metric("홈던트하우스", f"{latest_list.iloc[0]}" +" /" + f"{ratios[0]: .1%}", f"{ratios_delta[0]: .2%}" + "_" + f"{subtracts[0]}")
         col2.metric("스피드랙", f"{latest_list[1]}" +" /" + f"{ratios[1]: .1%}", f"{ratios_delta[1]: .2%}" + "_" + f"{subtracts[1]}")
 
         
