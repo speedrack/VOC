@@ -99,8 +99,8 @@ def cal_ratio(latest_list, previous_list):
     ratios_delta = []
 
     for i in range(5):
-        ratio = latest_list[i]/latest_sum
-        ratio_previous = previous_list[i]/previous_sum
+        ratio = latest_list.iloc[i]/latest_sum
+        ratio_previous = previous_list.iloc[i]/previous_sum
         ratio_delta = ratio - ratio_previous
         
         ratios.append(ratio)
